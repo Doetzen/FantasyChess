@@ -1,3 +1,5 @@
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ChessPieceDrag : MonoBehaviour
@@ -8,6 +10,9 @@ public class ChessPieceDrag : MonoBehaviour
     private bool isDragging = false;
     private Rigidbody rb;
     private ParticleSystem ps;
+
+    public float moveDuration;
+    public float waitToMove;
 
     void Start()
     {
@@ -57,5 +62,27 @@ public class ChessPieceDrag : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         ps.Play();
+        StartCoroutine(LerpToPosition(other.transform.position)); // Adjust duration as needed
+        print(other.gameObject);
     }
+
+    private IEnumerator LerpToPosition(Vector3 targetPosition)
+    {
+        Vector3 startPosition = transform.position;
+
+        yield return new WaitForSeconds(waitToMove);
+        float elapsedTime = 0f;
+
+
+        while (elapsedTime < moveDuration )
+        {
+            transform.position = Vector3.Lerp(startPosition,new Vector3(targetPosition.x, transform.position.y, targetPosition.z), elapsedTime / moveDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure the final position is set precisely to avoid small discrepancies
+        transform.position = new Vector3(targetPosition.x, transform.position.y, targetPosition.z);
+    }
+
 }

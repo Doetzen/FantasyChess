@@ -58,7 +58,7 @@ Transform:
   m_GameObject: {fileID: 7050773163716312902}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.2406, y: -0.557, z: -0.0074}
+  m_LocalPosition: {x: 0, y: -0.505, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -206,7 +206,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.054486737, y: 0.06564938, z: 0.05448671}
-  m_Center: {x: 0.24124306, y: -0.019281967, z: -0.008196132}
+  m_Center: {x: 0, y: 0.034, z: 0}
 --- !u!114 &2795434814936724169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,6 +219,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a58d6e57dceee140be728606d0d7938, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveDuration: 0.5
+  waitToMove: 2
 --- !u!54 &1671870792021086975
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -244,7 +246,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!199 &5462156839434078252
 ParticleSystemRenderer:
@@ -957,7 +959,7 @@ ParticleSystem:
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 0
     donutRadius: 0.2
-    m_Position: {x: 0.24, y: -0.05, z: -0.01}
+    m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 90, y: 0, z: 0}
     m_Scale: {x: 1, y: 1, z: 1}
     placementMode: 0
