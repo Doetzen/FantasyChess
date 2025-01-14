@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: -876546973899608171, guid: 9b4e681081e2b4c469111bb649e2f7ee,
+  m_Material: {fileID: -876546973899608171, guid: 7dd0672ce4839894b9b4951201885d62,
     type: 3}
   m_DrawDistance: 1000
   m_FadeScale: 0.9
