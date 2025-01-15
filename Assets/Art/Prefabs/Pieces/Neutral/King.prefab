@@ -227,6 +227,7 @@ MonoBehaviour:
   moveDuration: 0.5
   waitToMove: 2
   isWhite: 0
+  mat: {fileID: -876546973899608171, guid: 7dd0672ce4839894b9b4951201885d62, type: 3}
 --- !u!114 &1343083844851310607
 MonoBehaviour:
   m_ObjectHideFlags: 0

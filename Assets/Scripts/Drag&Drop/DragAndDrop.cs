@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class DragAndDrop : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class DragAndDrop : MonoBehaviour
     public float moveDuration;
     public float waitToMove;
     public bool isWhite;
+    private RaycastHit hit;
+    public Material mat;
 
     void Start()
     {
@@ -45,6 +48,7 @@ public class DragAndDrop : MonoBehaviour
         Vector3 mousePosition = GetMouseWorldPosition() + offset;
         mousePosition.y = dragHeight; // Lock Z-axis above the board
         transform.position = mousePosition;
+        StartCoroutine(RayCast());
     }
 
     void OnMouseUp()
@@ -54,6 +58,7 @@ public class DragAndDrop : MonoBehaviour
 
         // Enable gravity to drop the piece back on the board
         rb.useGravity = true;
+        StopCoroutine(RayCast());
     }
 
     private Vector3 GetMouseWorldPosition()
@@ -97,4 +102,31 @@ public class DragAndDrop : MonoBehaviour
         transform.position = new Vector3(targetPosition.x, transform.position.y, targetPosition.z);
     }
 
+    public IEnumerator RayCast()
+    {
+        if (Physics.Raycast(transform.position, -Vector3.up, out hit, 1f))
+        {
+            if (hit.collider.gameObject.GetComponent<DragAndDrop>())
+            {
+                if (isWhite && hit.collider.gameObject.GetComponent<DragAndDrop>().isWhite == false)
+                {
+                    mat.color = Color.red;
+                }
+                else if (isWhite == false && hit.collider.gameObject.GetComponent<DragAndDrop>().isWhite)
+                {
+                    mat.color = Color.red;
+                }
+                else
+                {
+                    mat.color = Color.cyan;
+                }
+            }
+            else
+            {
+                mat.color = Color.cyan;
+            }
+        }
+        yield return null;
+    }
+    
 }

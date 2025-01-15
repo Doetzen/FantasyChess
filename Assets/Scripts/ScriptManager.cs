@@ -8,6 +8,7 @@ public class ScriptManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         StartCoroutine(StartTurnSwitch());
     }
     public IEnumerator StartTurnSwitch()
@@ -15,5 +16,6 @@ public class ScriptManager : MonoBehaviour
         yield return new WaitForSeconds(1);
         gameObject.GetComponent<TurnSwitching>().enabled = true;
         gameStarted = true;
+        Cursor.lockState = CursorLockMode.Confined;
     }
 }
