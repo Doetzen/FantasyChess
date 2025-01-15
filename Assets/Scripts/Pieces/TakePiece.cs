@@ -22,30 +22,20 @@ public class TakePiece : MonoBehaviour
 
         if (collision.gameObject.GetComponent<DragAndDrop>() != null)
         {
-            if (dragAndDrop.isWhite)
+            if (dragAndDrop.isWhite != collision.gameObject.GetComponent<DragAndDrop>().isWhite)
             {
-                if (collision.gameObject.GetComponent<DragAndDrop>().isWhite == false)
-                {
-                    turnSwitch.pieces.Remove(collision.gameObject.GetComponent<DragAndDrop>());
-                    Destroy(collision.gameObject.transform.parent.transform.parent.gameObject);
+                turnSwitch.pieces.Remove(collision.gameObject.GetComponent<DragAndDrop>());
+                Destroy(collision.gameObject.transform.parent.transform.parent.gameObject);
 
-                    if (collision.gameObject.CompareTag("K"))
+                if (collision.gameObject.CompareTag("K"))
+                {
+                    gameOver = true;
+                    if (dragAndDrop.isWhite)
                     {
-                        gameOver = true;
                         _gameOver.GameOverBlack();
                     }
-                }
-            }
-            else if (!dragAndDrop.isWhite)
-            {
-                if (collision.gameObject.GetComponent<DragAndDrop>().isWhite)
-                {
-                    turnSwitch.pieces.Remove(collision.gameObject.GetComponent<DragAndDrop>());
-                    Destroy(collision.gameObject.transform.parent.transform.parent.gameObject);
-                    
-                    if (collision.gameObject.CompareTag("K"))
+                    else
                     {
-                        gameOver = true;
                         _gameOver.GameOverWhite();
                     }
                 }

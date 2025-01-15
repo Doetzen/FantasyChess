@@ -10,6 +10,7 @@ public class DragAndDrop : MonoBehaviour
     private float dragHeight = 0.2f; // Height above the board during dragging
     private bool isDragging = false;
     private bool ignoreTrigger;
+    private bool ignoreCollision;
     private Rigidbody rb;
     private ParticleSystem ps;
     private TurnSwitching turnSwitch;
@@ -43,6 +44,7 @@ public class DragAndDrop : MonoBehaviour
         Vector3 mousePosition = GetMouseWorldPosition();
         offset = transform.position - mousePosition;
         storedTile.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
+        ignoreCollision = false;
     }
 
     void OnMouseDrag()
@@ -93,6 +95,7 @@ public class DragAndDrop : MonoBehaviour
         {
             ignoreTrigger = false;
         }
+        ignoreCollision = true;
        
     }
     private void OnCollisionEnter(Collision collision)
@@ -102,6 +105,15 @@ public class DragAndDrop : MonoBehaviour
             transform.position = storedTile.transform.position;
             ignoreTrigger = true;
             storedTile.transform.position = new Vector3(0, -1, 0);
+        }
+        else if (collision.gameObject.GetComponent<DragAndDrop>() && collision.gameObject.GetComponent<DragAndDrop>().isWhite == isWhite)
+        {
+            if (ignoreCollision == false)
+            {
+                transform.position = storedTile.transform.position;
+                ignoreTrigger = true;
+                storedTile.transform.position = new Vector3(0, -1, 0);
+            }
         }
     }
 
@@ -130,11 +142,7 @@ public class DragAndDrop : MonoBehaviour
         {
             if (hit.collider.gameObject.GetComponent<DragAndDrop>())
             {
-                if (isWhite && hit.collider.gameObject.GetComponent<DragAndDrop>().isWhite == false)
-                {
-                    mat.color = Color.red;
-                }
-                else if (isWhite == false && hit.collider.gameObject.GetComponent<DragAndDrop>().isWhite)
+                if (hit.collider.gameObject.GetComponent<DragAndDrop>().isWhite != isWhite)
                 {
                     mat.color = Color.red;
                 }
