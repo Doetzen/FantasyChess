@@ -1,25 +1,22 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TurnSwitching : MonoBehaviour
 {
     private bool isWhiteTurn;
-    private DragAndDrop[] pieces;
-    private void Awake()
-    {
-        pieces = FindObjectsOfType<DragAndDrop>();
-    }
+    public List<DragAndDrop> pieces = new List<DragAndDrop>();
+   
 
     // Start is called before the first frame update
     void Start()
     {
         isWhiteTurn = true;
-        for (int i = 0;i < pieces.Length;i++)
+        foreach (var piece in pieces)
         {
-            if (pieces[i].isWhite == false)
+            if (piece.isWhite == false)
             {
-                pieces[i].enabled = false;
+                piece.enabled = false;
+                piece.GetComponent<TakePiece>().enabled = false;
             }
         }
     }
@@ -28,31 +25,37 @@ public class TurnSwitching : MonoBehaviour
     {
         if (isWhiteTurn)
         {
-            for (int i = 0; i < pieces.Length;i++)
+            foreach (var piece in pieces)
             {
-                if (pieces[i].isWhite)
+                if (piece.isWhite)
                 {
-                    pieces[i].enabled = false;
+                    piece.enabled = false;
+                    piece.GetComponent<TakePiece>().enabled = false;
                 }
                 else
                 {
-                    pieces[i].enabled = true;
+                    piece.enabled = true;
+                    piece.GetComponent<TakePiece>().enabled = true;
                 }
+                
             }
             isWhiteTurn=false;
         }
         else
         {
-            for (int i = 0; i < pieces.Length; i++)
+            foreach (var piece in pieces)
             {
-                if (pieces[i].isWhite)
+                if (piece.isWhite)
                 {
-                    pieces[i].enabled = true;
+                    piece.enabled = true;
+                    piece.GetComponent<TakePiece>().enabled = true;
                 }
                 else
                 {
-                    pieces[i].enabled = false;
+                    piece.enabled = false;
+                    piece.GetComponent<TakePiece>().enabled = false;
                 }
+                
             }
             isWhiteTurn = true;
         }

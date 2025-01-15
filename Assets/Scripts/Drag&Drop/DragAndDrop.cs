@@ -24,6 +24,7 @@ public class DragAndDrop : MonoBehaviour
         ps = GetComponent<ParticleSystem>();
         turnSwitch = FindAnyObjectByType<TurnSwitching>();
         scriptManager = FindAnyObjectByType<ScriptManager>();
+        turnSwitch.pieces.Add(this);
     }
 
     void OnMouseDown()
