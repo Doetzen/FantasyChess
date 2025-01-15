@@ -2,7 +2,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ChessPieceDrag : MonoBehaviour
+public class DragAndDrop : MonoBehaviour
 {
     private Camera mainCamera;
     private Vector3 offset;
@@ -10,19 +10,25 @@ public class ChessPieceDrag : MonoBehaviour
     private bool isDragging = false;
     private Rigidbody rb;
     private ParticleSystem ps;
+    private TurnSwitching turnSwitch;
+    private ScriptManager scriptManager;
 
     public float moveDuration;
     public float waitToMove;
+    public bool isWhite;
 
     void Start()
     {
         mainCamera = Camera.main;
         rb = GetComponent<Rigidbody>();
         ps = GetComponent<ParticleSystem>();
+        turnSwitch = FindAnyObjectByType<TurnSwitching>();
+        scriptManager = FindAnyObjectByType<ScriptManager>();
     }
 
     void OnMouseDown()
     {
+        if (!this.enabled) return;
         // Disable gravity and record the offset
         rb.useGravity = false;
         isDragging = true;
@@ -32,7 +38,7 @@ public class ChessPieceDrag : MonoBehaviour
 
     void OnMouseDrag()
     {
-        if (!isDragging) return;
+        if (!this.enabled || !isDragging) return;
 
         // Keep the piece above the board and follow the mouse position
         Vector3 mousePosition = GetMouseWorldPosition() + offset;
@@ -42,6 +48,7 @@ public class ChessPieceDrag : MonoBehaviour
 
     void OnMouseUp()
     {
+        if (!this.enabled) return;
         isDragging = false;
 
         // Enable gravity to drop the piece back on the board
@@ -64,6 +71,10 @@ public class ChessPieceDrag : MonoBehaviour
         ps.Play();
         StartCoroutine(LerpToPosition(other.transform.position)); // Adjust duration as needed
         print(other.gameObject);
+        if (scriptManager.gameStarted)
+        {
+            turnSwitch.SwitchTurn();
+        }
     }
 
     private IEnumerator LerpToPosition(Vector3 targetPosition)
