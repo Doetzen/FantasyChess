@@ -9,16 +9,19 @@ public class DragAndDrop : MonoBehaviour
     private Vector3 offset;
     private float dragHeight = 0.2f; // Height above the board during dragging
     private bool isDragging = false;
+    private bool ignoreTrigger;
     private Rigidbody rb;
     private ParticleSystem ps;
     private TurnSwitching turnSwitch;
     private ScriptManager scriptManager;
+    private GameObject storedTile;
 
     public float moveDuration;
     public float waitToMove;
     public bool isWhite;
     private RaycastHit hit;
     public Material mat;
+    
 
     void Start()
     {
@@ -28,6 +31,7 @@ public class DragAndDrop : MonoBehaviour
         turnSwitch = FindAnyObjectByType<TurnSwitching>();
         scriptManager = FindAnyObjectByType<ScriptManager>();
         turnSwitch.pieces.Add(this);
+        storedTile = GameObject.FindGameObjectWithTag("S");
     }
 
     void OnMouseDown()
@@ -38,6 +42,7 @@ public class DragAndDrop : MonoBehaviour
         isDragging = true;
         Vector3 mousePosition = GetMouseWorldPosition();
         offset = transform.position - mousePosition;
+        storedTile.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
     }
 
     void OnMouseDrag()
@@ -74,12 +79,29 @@ public class DragAndDrop : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        ps.Play();
-        StartCoroutine(LerpToPosition(other.transform.position)); // Adjust duration as needed
-        print(other.gameObject);
-        if (scriptManager.gameStarted)
+        if (ignoreTrigger == false)
         {
-            turnSwitch.SwitchTurn();
+            ps.Play();
+            StartCoroutine(LerpToPosition(other.transform.position)); // Adjust duration as needed
+            if (scriptManager.gameStarted)
+            {
+                turnSwitch.SwitchTurn();
+            }
+            storedTile.transform.position = new Vector3(0, -1, 0);
+        }
+        else
+        {
+            ignoreTrigger = false;
+        }
+       
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.tag == "M")
+        {
+            transform.position = storedTile.transform.position;
+            ignoreTrigger = true;
+            storedTile.transform.position = new Vector3(0, -1, 0);
         }
     }
 

@@ -13,7 +13,7 @@ public class ScriptManager : MonoBehaviour
     }
     public IEnumerator StartTurnSwitch()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2.5f);
         gameObject.GetComponent<TurnSwitching>().enabled = true;
         gameStarted = true;
         Cursor.lockState = CursorLockMode.Confined;
