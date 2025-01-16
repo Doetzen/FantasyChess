@@ -6,14 +6,16 @@ public class TakePiece : MonoBehaviour
     private DragAndDrop dragAndDrop;
     private TurnSwitching turnSwitch;
     private GameOver _gameOver;
+    private SetPieceToHolder holder;
 
     public bool gameOver;
 
-    private void Start()
+    private void Awake()
     {
         dragAndDrop = GetComponent<DragAndDrop>();
         turnSwitch = FindAnyObjectByType<TurnSwitching>();
         _gameOver = FindAnyObjectByType<GameOver>();
+        holder = FindAnyObjectByType<SetPieceToHolder>();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -25,7 +27,8 @@ public class TakePiece : MonoBehaviour
             if (dragAndDrop.isWhite != collision.gameObject.GetComponent<DragAndDrop>().isWhite)
             {
                 turnSwitch.pieces.Remove(collision.gameObject.GetComponent<DragAndDrop>());
-                Destroy(collision.gameObject.transform.parent.transform.parent.gameObject);
+                holder.SetToHolder(collision.gameObject);
+               // Destroy(collision.gameObject.transform.parent.transform.parent.gameObject);
 
                 if (collision.gameObject.CompareTag("K"))
                 {
